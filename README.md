@@ -23,13 +23,19 @@ AWS mistakes — public buckets, SSH/RDP open to the world, IAM users without MF
 
 > ⚠️ **Read-only.** Only `list`/`get`/`describe` API calls. Never mutates your account.
 
-## Checks (v0)
+## Checks
 
 | ID | Check | Severity |
 |----|-------|----------|
 | `SG-OPEN` | Security groups exposing 22/3389 to `0.0.0.0/0` | Critical |
 | `S3-PUBLIC` | S3 buckets allowing public access | High |
+| `S3-ENC` | S3 buckets without default encryption | Medium |
 | `IAM-MFA` | IAM users without an MFA device | High |
+| `IAM-KEYAGE` | Active IAM access keys older than 90 days | Medium |
+| `IAM-PWPOLICY` | Weak/missing account password policy | Medium |
+| `CT-LOGGING` | No actively-logging multi-region CloudTrail | High |
+| `RDS-PUBLIC` | RDS instances marked publicly accessible | High |
+| `EBS-ENC` | Unencrypted EBS volumes | Medium |
 
 ## Setup
 
@@ -42,7 +48,8 @@ python -m awsaudit --format console,json
 The IAM principal needs read-only access — the AWS managed **`SecurityAudit`** or **`ReadOnlyAccess`** policy is enough.
 
 ## Roadmap
-- [ ] CloudTrail enabled / multi-region check
-- [ ] Access key age & unused credentials
-- [ ] Public RDS / unencrypted EBS
-- [ ] HTML report + CIS AWS mapping
+- [x] CloudTrail multi-region logging check
+- [x] IAM access key age & password policy
+- [x] Public RDS / unencrypted EBS / S3 default encryption
+- [ ] KMS key rotation & unused credentials report
+- [ ] HTML report + CIS AWS Benchmark mapping
