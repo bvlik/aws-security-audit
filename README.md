@@ -25,17 +25,25 @@ AWS mistakes — public buckets, SSH/RDP open to the world, IAM users without MF
 
 ## Checks
 
+**15 read-only checks** across IAM, S3, EC2/EBS, RDS, KMS and CloudTrail.
+
 | ID | Check | Severity |
 |----|-------|----------|
 | `SG-OPEN` | Security groups exposing 22/3389 to `0.0.0.0/0` | Critical |
 | `S3-PUBLIC` | S3 buckets allowing public access | High |
 | `S3-ENC` | S3 buckets without default encryption | Medium |
+| `S3-VERSIONING` | S3 buckets without versioning | Low |
 | `IAM-MFA` | IAM users without an MFA device | High |
+| `IAM-ROOT-KEYS` | Root account has active access keys | Critical |
+| `IAM-ADMIN` | Principals with AdministratorAccess attached | High |
 | `IAM-KEYAGE` | Active IAM access keys older than 90 days | Medium |
 | `IAM-PWPOLICY` | Weak/missing account password policy | Medium |
 | `CT-LOGGING` | No actively-logging multi-region CloudTrail | High |
 | `RDS-PUBLIC` | RDS instances marked publicly accessible | High |
+| `RDS-ENCRYPTION` | RDS instances without storage encryption | High |
 | `EBS-ENC` | Unencrypted EBS volumes | Medium |
+| `EC2-IMDSV2` | EC2 instances not enforcing IMDSv2 | Medium |
+| `KMS-ROTATION` | Customer-managed KMS keys without rotation | Medium |
 
 ## Setup
 
@@ -51,5 +59,7 @@ The IAM principal needs read-only access — the AWS managed **`SecurityAudit`**
 - [x] CloudTrail multi-region logging check
 - [x] IAM access key age & password policy
 - [x] Public RDS / unencrypted EBS / S3 default encryption
-- [ ] KMS key rotation & unused credentials report
+- [x] Root access keys, AdministratorAccess principals, S3 versioning
+- [x] KMS key rotation & EC2 IMDSv2 enforcement
+- [ ] Unused-credentials report (credential report parsing)
 - [ ] HTML report + CIS AWS Benchmark mapping
